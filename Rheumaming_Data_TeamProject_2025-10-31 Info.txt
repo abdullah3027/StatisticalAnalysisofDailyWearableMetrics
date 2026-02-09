@@ -1,0 +1,28 @@
+
+Tracker: Amazfit Bi5 Unity fitness tracker. 
+
+We obtain the dataset via an application called Gadgetbridge. This application
+serves as a means for downloading tracker data without the need for the vendor
+application Zepp, providing data security without the possibility of data leakage
+to the server from the device’s original location.
+
+-------------
+
+HUAMI_EXTENDED_ACTIVITY_SAMPLE_*.csv is a wearable “extended activity” time-series where each row is one reading at a specific moment from a specific device for a specific visit of a user. It has 11 columns:
+TIMESTAMP is the capture time in seconds.
+DEVICE_ID is an integer identifying which watch produced the reading;
+USER_ID encodes user and visit together as user.visit (the integer part is the user, the digit after the dot is the visit index where .0 = first visit, .1 = second visit, etc.; e.g., 1.0 = user 1 first visit, 5.1 = user 5 second visit).
+RAW_INTENSITY is an activity/movement intensity value (unitless vendor index; higher ≈ more motion; commonly 0–199 here) useful for detecting active vs. sedentary periods
+STEPS is the steps counted within the sampling interval (often 0 for rest, spikes when walking/running; max values reflect short bursts)
+RAW_KIND is a device-specific activity code that label the kind of activity/state according to the firmware (treat as categories)
+HEART_RATE is beats-per-minute when available, with 255 typically meaning “no HR available/missing”
+UNKNOWN1 is a firmware flag/quality/aux field
+SLEEP, DEEP_SLEEP, and REM_SLEEP are vendor sleep metrics per timestamp (zero when not sleeping; non-zero during sleep windows
+Sampling is typically ~1 minute for a given device/visit, with natural gaps (device not worn, no signal, sleep detection batching).
+
+
+HUAMI_SPO2_SAMPLE_*.csv is a wearable oxygen-saturation (SpO₂) time-series where each row is one reading at a specific moment from a specific device (and user).
+TYPE_NUM is a measurement-type code—in this file it denotes SpO₂ (commonly a fixed value like 0 here and useful in mixed-signal pipelines); and SPO2 is the blood oxygen saturation percentage reported by the device—an integer 0–100 where typical healthy at-rest values are around 95–100% (higher = better oxygenation). Readings are usually taken about every 5 minutes with natural gaps (device not worn, no signal, battery).
+
+HUAMI_STRESS_SAMPLE_*.csv is a wearable stress time-series where each row is one reading at a specific moment from a particular device
+TYPE_NUM is a measurement-type code that here denotes stress (often a fixed value in this file, useful when multiple signal types share a schema); and STRESS is the device’s unitless stress score/index (higher = more estimated stress), intended for relative trends (hour-to-hour, day-to-day, device-to-device). Readings are usually taken about every 5 minutes, with natural gaps when the device isn’t worn/has no signal. 
